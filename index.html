@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurnal Ibadah Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f0f7ff;
+            color: #4a5568;
+        }
+        .active-tab {
+            background-color: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .checkbox-custom {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #60a5fa;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .scroll-hide::-webkit-scrollbar { display: none; }
+        
+        .tab-content {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Avatar styling */
+        .avatar-container {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .avatar-container:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24">
+
+    <!-- Header & Kalender -->
+    <header class="p-6 text-center">
+        <h1 class="text-2xl font-bold text-blue-600 mb-2">Jurnal Ibadah Digital 🌙</h1>
+        <div class="flex justify-center items-center gap-4 bg-white p-3 rounded-2xl shadow-sm inline-flex border border-blue-100">
+            <input type="date" id="datePicker" class="outline-none text-blue-500 font-semibold cursor-pointer bg-transparent">
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-md mx-auto px-4">
+        
+        <!-- Jendela 1: Sholat 5 Waktu -->
+        <section id="tab-sholat" class="tab-content">
+            <div class="glass-card rounded-3xl p-6 shadow-sm">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>🕌</span> Sholat 5 Waktu
+                </h2>
+                <div class="space-y-4" id="sholat-list">
+                    <label class="flex items-center justify-between p-4 bg-blue-50 rounded-2xl cursor-pointer hover:bg-blue-100 transition border border-blue-100/50">
+                        <span class="font-medium">Subuh</span>
+                        <input type="checkbox" class="checkbox-custom main-cb" data-id="subuh">
+                    </label>
+                    <label class="flex items-center justify-between p-4 bg-blue-50 rounded-2xl cursor-pointer hover:bg-blue-100 transition border border-blue-100/50">
+                        <span class="font-medium">Dzuhur</span>
+                        <input type="checkbox" class="checkbox-custom main-cb" data-id="dzuhur">
+                    </label>
+                    <label class="flex items-center justify-between p-4 bg-blue-50 rounded-2xl cursor-pointer hover:bg-blue-100 transition border border-blue-100/50">
+                        <span class="font-medium">Ashar</span>
+                        <input type="checkbox" class="checkbox-custom main-cb" data-id="ashar">
+                    </label>
+                    <label class="flex items-center justify-between p-4 bg-blue-50 rounded-2xl cursor-pointer hover:bg-blue-100 transition border border-blue-100/50">
+                        <span class="font-medium">Maghrib</span>
+                        <input type="checkbox" class="checkbox-custom main-cb" data-id="maghrib">
+                    </label>
+                    <label class="flex items-center justify-between p-4 bg-blue-50 rounded-2xl cursor-pointer hover:bg-blue-100 transition border border-blue-100/50">
+                        <span class="font-medium">Isya</span>
+                        <input type="checkbox" class="checkbox-custom main-cb" data-id="isya">
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Jendela 2: Juz 30 -->
+        <section id="tab-juz30" class="tab-content hidden">
+            <div class="glass-card rounded-3xl p-6 shadow-sm">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>📖</span> Hafalan Juz 30
+                </h2>
+                <div class="space-y-2 max-h-[60vh] overflow-y-auto pr-2 scroll-hide" id="surah-list">
+                    <!-- Dinamis via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Jendela 3: Sholat Sunnah -->
+        <section id="tab-sunnah" class="tab-content hidden">
+            <div class="glass-card rounded-3xl p-6 shadow-sm">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>✨</span> Sholat Sunnah
+                </h2>
+                <div class="space-y-4" id="sunnah-list">
+                    <label class="flex items-center justify-between p-4 bg-indigo-50 rounded-2xl cursor-pointer hover:bg-indigo-100 transition border border-indigo-100/50">
+                        <span class="font-medium">Tahajjud</span>
+                        <input type="checkbox" class="checkbox-custom main-cb" data-id="tahajjud">
+                    </label>
+                    <label class="flex items-center justify-between p-4 bg-indigo-50 rounded-2xl cursor-pointer hover:bg-indigo-100 transition border border-indigo-100/50">
+                        <span class="font-medium">Duha</span>
+                        <input type="checkbox" class="checkbox-custom main-cb" data-id="duha">
+                    </label>
+                    <label class="flex items-center justify-between p-4 bg-indigo-50 rounded-2xl cursor-pointer hover:bg-indigo-100 transition border border-indigo-100/50">
+                        <span class="font-medium">Rawatib</span>
+                        <input type="checkbox" class="checkbox-custom main-cb" data-id="rawatib">
+                    </label>
+                    <label class="flex items-center justify-between p-4 bg-indigo-50 rounded-2xl cursor-pointer hover:bg-indigo-100 transition border border-indigo-100/50">
+                        <span class="font-medium">Witir</span>
+                        <input type="checkbox" class="checkbox-custom main-cb" data-id="witir">
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Jendela 4: Profil & Target -->
+        <section id="tab-profil" class="tab-content hidden">
+            <div class="space-y-4">
+                <!-- User Profile Info -->
+                <div class="glass-card rounded-3xl p-6 shadow-sm text-center">
+                    <!-- Avatar Selection -->
+                    <div class="avatar-container w-20 h-20 bg-blue-200 rounded-full mx-auto mb-3 flex items-center justify-center text-4xl border-4 border-white shadow-sm overflow-hidden" onclick="toggleAvatar()">
+                        <span id="userAvatar">🧕</span>
+                    </div>
+                    <p class="text-[9px] text-blue-400 mb-2 uppercase font-bold tracking-tighter">Ketuk foto untuk ganti avatar</p>
+                    
+                    <input type="text" id="userName" placeholder="Nama Kamu" class="text-xl font-bold text-center bg-transparent border-b-2 border-blue-100 outline-none w-full mb-1">
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-4">Profil Saya</p>
+                    
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <div class="bg-blue-100/50 p-3 rounded-2xl border border-blue-100">
+                            <span class="block text-xl font-bold text-blue-600" id="stat-sholat">0</span>
+                            <span class="text-[10px] uppercase font-bold text-blue-400">Sholat</span>
+                        </div>
+                        <div class="bg-blue-100/50 p-3 rounded-2xl border border-blue-100">
+                            <span class="block text-xl font-bold text-blue-600" id="stat-surah">0</span>
+                            <span class="text-[10px] uppercase font-bold text-blue-400">Surat</span>
+                        </div>
+                    </div>
+
+                    <!-- Target Harian (Isi Sendiri) -->
+                    <div class="text-left bg-white/50 p-4 rounded-2xl border border-blue-50">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-sm text-blue-600 flex items-center gap-1">🎯 Target Harian</h3>
+                            <button onclick="addTarget()" class="text-blue-500 hover:text-blue-700 font-bold text-xl">+</button>
+                        </div>
+                        <div id="target-container" class="space-y-2">
+                            <!-- Target items will appear here -->
+                        </div>
+                        <p class="text-[9px] text-gray-400 mt-3">*Klik "+" untuk tambah target baru, isi teksnya, lalu centang.</p>
+                    </div>
+
+                    <!-- Kotak Penyimpanan Catatan -->
+                    <div class="mt-6 text-left">
+                        <h3 class="font-bold text-sm text-gray-400 uppercase tracking-widest mb-2 px-1">Catatan Khusus</h3>
+                        <textarea id="dailyNote" class="w-full h-24 p-4 rounded-2xl bg-white border-none outline-none text-sm shadow-inner resize-none focus:ring-1 focus:ring-blue-100" placeholder="Catat syukurmu hari ini..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Navigasi Bawah -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.05)] p-4 flex justify-around items-center rounded-t-[2.5rem] border-t border-blue-50">
+        <button onclick="switchTab('sholat')" class="nav-btn p-3 rounded-2xl transition active-tab" data-tab="sholat">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+        </button>
+        <button onclick="switchTab('juz30')" class="nav-btn p-3 rounded-2xl transition text-gray-400" data-tab="juz30">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        </button>
+        <button onclick="switchTab('sunnah')" class="nav-btn p-3 rounded-2xl transition text-gray-400" data-tab="sunnah">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z"></path></svg>
+        </button>
+        <button onclick="switchTab('profil')" class="nav-btn p-3 rounded-2xl transition text-gray-400" data-tab="profil">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        </button>
+    </nav>
+
+    <script>
+        const surahNames = [
+            "An-Naba", "An-Nazi'at", "Abasa", "At-Takwir", "Al-Infitar", "Al-Mutaffifin", 
+            "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr", 
+            "Al-Balad", "Ash-Shams", "Al-Layl", "Ad-Duha", "Ash-Sharh", "At-Tin", 
+            "Al-'Alaq", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-'Adiyat", "Al-Qari'ah", 
+            "At-Takathur", "Al-'Asr", "Al-Humazah", "Al-Fil", "Quraysh", "Al-Ma'un", 
+            "Al-Kawthar", "Al-Kafirun", "An-Nasr", "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
+        ];
+
+        let database = JSON.parse(localStorage.getItem('jurnal_islami_db')) || {};
+        const avatars = ["🧕", "👳‍♂️"];
+
+        window.onload = () => {
+            const dateInput = document.getElementById('datePicker');
+            const today = new Date().toLocaleDateString('en-CA');
+            dateInput.value = today;
+            
+            document.getElementById('userName').value = localStorage.getItem('jurnal_user_name') || "";
+            const savedAvatar = localStorage.getItem('jurnal_user_avatar') || "🧕";
+            document.getElementById('userAvatar').innerText = savedAvatar;
+            
+            renderSurahList();
+            loadProgress(today);
+
+            dateInput.addEventListener('change', (e) => loadProgress(e.target.value));
+            document.getElementById('userName').addEventListener('input', (e) => {
+                localStorage.setItem('jurnal_user_name', e.target.value);
+            });
+            document.getElementById('dailyNote').addEventListener('input', saveProgress);
+        };
+
+        function toggleAvatar() {
+            const avatarEl = document.getElementById('userAvatar');
+            const current = avatarEl.innerText;
+            const next = current === avatars[0] ? avatars[1] : avatars[0];
+            avatarEl.innerText = next;
+            localStorage.setItem('jurnal_user_avatar', next);
+        }
+
+        function renderSurahList() {
+            const container = document.getElementById('surah-list');
+            surahNames.forEach((name, index) => {
+                const label = document.createElement('label');
+                label.className = "flex items-center justify-between p-3 bg-blue-50 rounded-xl cursor-pointer hover:bg-blue-100 transition border border-blue-100/50";
+                label.innerHTML = `
+                    <span class="text-xs font-medium">${index + 78}. ${name}</span>
+                    <input type="checkbox" class="checkbox-custom main-cb" data-id="surah-${index}">
+                `;
+                container.appendChild(label);
+                label.querySelector('input').addEventListener('change', saveProgress);
+            });
+
+            document.querySelectorAll('#sholat-list input, #sunnah-list input').forEach(cb => {
+                cb.addEventListener('change', saveProgress);
+            });
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active-tab', 'text-blue-500'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active-tab');
+        }
+
+        function addTarget(text = "", checked = false) {
+            const container = document.getElementById('target-container');
+            
+            const div = document.createElement('div');
+            div.className = "flex items-center gap-2 bg-white p-2 rounded-xl border border-blue-50 shadow-sm";
+            div.innerHTML = `
+                <input type="checkbox" class="checkbox-custom custom-cb" ${checked ? 'checked' : ''}>
+                <input type="text" class="text-sm bg-transparent border-none outline-none flex-1 font-medium text-blue-600" placeholder="Tulis target..." value="${text}">
+                <button class="text-red-300 hover:text-red-500 text-xs px-1" onclick="this.parentElement.remove(); saveProgress();">×</button>
+            `;
+            
+            container.appendChild(div);
+            
+            div.querySelector('input[type="checkbox"]').addEventListener('change', saveProgress);
+            div.querySelector('input[type="text"]').addEventListener('input', saveProgress);
+            
+            if (text === "") saveProgress();
+        }
+
+        function loadProgress(date) {
+            const dayData = database[date] || {};
+            
+            document.querySelectorAll('.main-cb').forEach(cb => {
+                const id = cb.getAttribute('data-id');
+                cb.checked = dayData[id] || false;
+            });
+
+            const targetContainer = document.getElementById('target-container');
+            targetContainer.innerHTML = "";
+            if (dayData.customTargets && dayData.customTargets.length > 0) {
+                dayData.customTargets.forEach(t => addTarget(t.text, t.checked));
+            }
+
+            document.getElementById('dailyNote').value = dayData['note'] || "";
+            updateStats(date);
+        }
+
+        function saveProgress() {
+            const date = document.getElementById('datePicker').value;
+            if (!database[date]) database[date] = {};
+
+            document.querySelectorAll('.main-cb').forEach(cb => {
+                const id = cb.getAttribute('data-id');
+                database[date][id] = cb.checked;
+            });
+
+            const customTargets = [];
+            document.querySelectorAll('#target-container > div').forEach(div => {
+                const text = div.querySelector('input[type="text"]').value;
+                const checked = div.querySelector('input[type="checkbox"]').checked;
+                if (text.trim() !== "") {
+                    customTargets.push({ text, checked });
+                }
+            });
+            database[date].customTargets = customTargets;
+
+            database[date]['note'] = document.getElementById('dailyNote').value;
+            localStorage.setItem('jurnal_islami_db', JSON.stringify(database));
+            updateStats(date);
+        }
+
+        function updateStats(date) {
+            const dayData = database[date] || {};
+            let sholatCount = 0;
+            let surahCount = 0;
+
+            ['subuh', 'dzuhur', 'ashar', 'maghrib', 'isya'].forEach(id => { if(dayData[id]) sholatCount++; });
+            Object.keys(dayData).forEach(key => {
+                if(key.startsWith('surah-') && dayData[key]) surahCount++;
+            });
+
+            document.getElementById('stat-sholat').innerText = sholatCount;
+            document.getElementById('stat-surah').innerText = surahCount;
+        }
+    </script>
+</body>
+</html>
